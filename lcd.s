@@ -103,27 +103,8 @@ lcd_instruction:
   rts
 
 LCDPRINT:
-  jsr FRMEVL            ; Evaluate formular
-  bit VALTYP            ; Is it a string?
-  bmi lcd_print_string  ; Yes
-  jsr FOUT              ; Format floating point output
-  jsr STRLIT            ; Build string descriptor
-lcd_print_string:
-  jsr FREFAC            ; Returns temp pointer to string
-  tax                   ; Put count to counter
-  ldy #0
-  inx                   ; Move one ahead
-lcd_print_next:
-  dex
-  beq lcd_print_end     ; All done
-  lda (INDEX),y         ; Load char of string
-  jsr lcd_print_char    ; Output to lcd
-  iny
-  bne lcd_print_next    ; Go on with next char
-lcd_print_end:
-  rts
-
-lcd_print_char:
+  jsr GETBYT
+  txa
   jsr lcd_wait
   pha
   lsr
